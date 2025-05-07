@@ -1,0 +1,33 @@
+[33mcommit e928a38d75ee965feaf977c3af77bb5083b333a2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Sebastian Bonilla <sbonilla623@gmail.com>
+Date:   Mon May 5 20:25:55 2025 -0400
+
+    zxczv
+
+ client | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[33mcommit d9d456215570f0465fc1f5612f01fd5ac9535589[m
+Author: Sebastian Bonilla <sbonilla623@gmail.com>
+Date:   Mon May 5 20:19:34 2025 -0400
+
+    client json fix2
+
+ client | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[33mcommit 7e5466b5d0a29c4acc4f719af014fa8d070ce4c0[m
+Merge: 6a7a50f 767eee5
+Author: Sebastian Bonilla <sbonilla623@gmail.com>
+Date:   Mon May 5 20:09:10 2025 -0400
+
+    Merge remote changes
+
+[33mcommit 0ca405beda6ffdf830cb39d050547423b94016c4[m
+Author: Sebastian Bonilla <sbonilla623@gmail.com>
+Date:   Thu May 1 23:16:51 2025 -0400
+
+    deployment update
+
+ client | 1 [32m+[m
+ 1 file changed, 1 insertion(+)

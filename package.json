@@ -1,0 +1,31 @@
+{
+  "name": "ai-appointment-booking",
+  "version": "1.0.0",
+  "description": "AI Appointment Booking application with React, GraphQL, MongoDB, and API integrations",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "setup": "cd server && npm i && cd ../client && npm i",
+    "build": "cd client && npm install && npm run build",
+    "seed": "cd server && npm run seed"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "appointment",
+    "booking",
+    "ai",
+    "twilio",
+    "openai",
+    "google-calendar",
+    "mern",
+    "graphql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
