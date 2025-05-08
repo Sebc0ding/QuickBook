@@ -1,3 +1,4 @@
 .env
-config/secrets.js
-credentials.json
+
+twilio.js
+openai.js
