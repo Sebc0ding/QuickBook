@@ -9,7 +9,7 @@
     "setup": "cd server && npm i && cd ../client && npm i",
     "build": "cd client && npm install && npm run build",
     "seed": "cd server && npm run seed",
-    "render-build": "npm install && npm run build" 
+    "render-build": "npm install && npm run build"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -27,6 +27,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "react-scripts": "^5.0.1"
   }
 }
