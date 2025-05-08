@@ -10,8 +10,6 @@
     "build": "cd client && npm install && react-scripts build",
     "seed": "cd server && npm run seed",
     "render-build": "npm install && npm run build"
-  }
-    
   },
   "engines": {
     "node": ">=18.0.0"
@@ -33,3 +31,4 @@
     "react-scripts": "^5.0.1"
   }
 }
+
