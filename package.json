@@ -8,8 +8,8 @@
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "setup": "cd server && npm i && cd ../client && npm i",
     "build": "cd client && npm install && npm run build",
-    "seed": "cd server && npm run seed",
-    "render-build": "npm install && npm run build"
+    "seed": "cd server && npm run seed"
+    
   },
   "engines": {
     "node": ">=18.0.0"
