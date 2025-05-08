@@ -61,12 +61,8 @@ const startApolloServer = async () => {
       console.log("Running in production mode, serving React app...");
       app.use(express.static(path.join(__dirname, '../client/build')));
       
-      // For any route except /graphql, serve the React app
-      app.get('*', (req, res, next) => {
-        if (req.path === server.graphqlPath) {
-          return next();
-        }
-        res.sendFile(path.join(__dirname, '../client/build/index.html'));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
       });
     } else {
       // In development, just show API message for root

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './index.css'; // Optional styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 console.log("Hello World");
 

@@ -37,6 +37,7 @@ const client = new ApolloClient({
 });
 
 function App() {
+  console.log("App component rendering");  // Add this for debugging
   return (
     <ApolloProvider client={client}>
       <Router>
