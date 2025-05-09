@@ -5,8 +5,10 @@ const typeDefs = gql`
     _id: ID
     username: String
     email: String
+    password: String
     phoneNumber: String
     appointments: [Appointment]
+    role: String
   }
 
   type Professional {
@@ -23,6 +25,7 @@ const typeDefs = gql`
   }
 
   type Availability {
+    _id: ID
     day: String
     startTime: String
     endTime: String
@@ -34,6 +37,7 @@ const typeDefs = gql`
     duration: Int
     price: Float
     description: String
+    professional: ID
   }
 
   input AvailabilityInput {
@@ -56,8 +60,11 @@ const typeDefs = gql`
     startTime: String
     endTime: String
     userId: ID
+    professionalId: ID
+    serviceId: ID
     googleEventId: String
     reminderSent: Boolean
+    status: String
     createdAt: String
   }
 
@@ -74,25 +81,49 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    users: [User]
+    user(_id: ID!): User
     appointments: [Appointment]
     appointment(_id: ID!): Appointment
+    userAppointments: [Appointment]
+    professionals: [Professional]
+    professional(_id: ID!): Professional
     getProfessionalProfile: Professional
     getProfessionalServices: [Service]
+    getAvailableTimes(date: String!, professionalId: ID!, serviceId: ID!): [String]
+    getService(_id: ID!): Service
+    getServices: [Service]
+    getProfessionalById(_id: ID!): Professional
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!, phoneNumber: String!): Auth
     login(email: String!, password: String!): Auth
+    updateUser(_id: ID!, username: String, email: String, password: String, phoneNumber: String): User
+    deleteUser(_id: ID!): User
+    
     addAppointment(title: String!, description: String!, startTime: String!, endTime: String!): Appointment
+    bookAppointment(professionalId: ID!, serviceId: ID!, date: String!, time: String!): Appointment
     updateAppointment(_id: ID!, title: String, description: String, startTime: String, endTime: String): Appointment
     removeAppointment(_id: ID!): Appointment
-    processAiMessage(message: String!): String
+    cancelAppointment(_id: ID!): Appointment
+    
     createProfessionalProfile(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
+    updateProfessionalProfile(_id: ID!, name: String, email: String, phoneNumber: String, specialty: String, bio: String): Professional
+    deleteProfessionalProfile(_id: ID!): Professional
+    
     updateAvailability(availability: [AvailabilityInput!]!): Professional
+    
     addService(name: String!, duration: Int!, price: Float!, description: String): Service
     updateService(_id: ID!, name: String, duration: Int, price: Float, description: String): Service
     deleteService(_id: ID!): Service
+    
     connectGoogleCalendar(code: String!, redirectUri: String!): CalendarConnection
+    disconnectGoogleCalendar: Boolean
+    
+    processAiMessage(message: String!): String
+    sendReminderEmail(appointmentId: ID!): Boolean
+    sendReminderSMS(appointmentId: ID!): Boolean
   }
 `;
 
