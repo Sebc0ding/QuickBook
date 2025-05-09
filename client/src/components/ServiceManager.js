@@ -157,3 +157,6 @@ function ServiceManager() {
     </div>
   );
 }
+
+// Make sure to export the component as default
+export default ServiceManager;
