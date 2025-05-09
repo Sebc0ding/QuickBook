@@ -11,6 +11,11 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import AppointmentForm from './pages/AppointmentForm';
+import NotFound from './pages/NotFound';
+
+// Import or create the missing components
+import OAuthCallback from './pages/OAuthCallback';
+import Onboarding from './pages/Onboarding';
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -37,7 +42,8 @@ const client = new ApolloClient({
 });
 
 function App() {
-  console.log("App component rendering");  // Add this for debugging
+  console.log("App component rendering"); // Add this for debugging
+  
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -49,11 +55,9 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/appointment" element={<AppointmentForm />} />
               <Route path="/oauth-callback" element={<OAuthCallback />} />
-              
-              {/* Add the onboarding route */}
               <Route path="/onboarding" element={<Onboarding />} />
-              
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
