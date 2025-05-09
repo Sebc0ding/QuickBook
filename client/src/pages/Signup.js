@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { Card, Form, Button, Alert } from 'react-bootstrap';
-import { ADD_USER, CREATE_PROFESSIONAL } from '../utils/mutations';
+import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-const Signup = () => {
+function Signup() {
+  // Set initial form state
   const [formState, setFormState] = useState({
-    username: '', 
-    email: '', 
+    username: '',
+    email: '',
     password: '',
-    phoneNumber: '',
-    specialty: '', // Added professional field
-    bio: ''        // Added professional field
+    phoneNumber: ''
   });
-  const [validated] = useState(false);
+
+  // Set state for form validation
+  const [validated, setValidated] = useState(false);
+  
+  // Set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
   const [addUser, { error }] = useMutation(ADD_USER);
-  // Add mutation to create professional profile
-  const [createProfessional] = useMutation(CREATE_PROFESSIONAL);
 
-  const handleChange = (event) => {
+  // Update state based on form input changes
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormState({
       ...formState,
@@ -29,121 +29,122 @@ const Signup = () => {
     });
   };
 
+  // Submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    
-    try {
-      // First create user account
-      const { data } = await addUser({
-        variables: { ...formState }
-      });
-      
-      // Then create professional profile
-      await createProfessional({
-        variables: {
-          name: formState.username,
-          email: formState.email,
-          phoneNumber: formState.phoneNumber,
-          specialty: formState.specialty || '', // Default value in case it's empty
-          bio: formState.bio || ''               // Default value in case it's empty
-        }
-      });
-      
-      Auth.login(data.addUser.token);
-    } catch (e) {
-      console.error(e);
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
+
+    setValidated(true);
+
+    try {
+      const { data } = await addUser({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.addUser.token);
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
+    }
+
+    // Clear form values
+    setFormState({
+      username: '',
+      email: '',
+      password: '',
+      phoneNumber: ''
+    });
   };
 
   return (
-    <div className="d-flex justify-content-center">
-      <Card style={{ width: '24rem' }} className="p-4">
-        <Card.Title className="text-center">Sign Up</Card.Title>
-        <Card.Body>
-          {showAlert && (
-            <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-              Something went wrong with your signup!
-            </Alert>
-          )}
+    <div className="container my-5">
+      <div className="card">
+        <div className="card-header bg-dark text-light p-3">
+          <h4 className="m-0">Sign Up</h4>
+        </div>
+        <div className="card-body">
+          {/* This is needed for the validation functionality above */}
+          <form noValidate validated={validated} onSubmit={handleFormSubmit}>
+            {/* Show alert if server response is bad */}
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                Something went wrong with your signup!
+              </div>
+            )}
 
-          <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="username">Username</Form.Label>
-              <Form.Control
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label">Username</label>
+              <input
                 type="text"
+                className="form-control"
                 placeholder="Your username"
                 name="username"
                 onChange={handleInputChange}
                 value={formState.username}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                Username is required!
-              </Form.Control.Feedback>
-            </Form.Group>
+              <div className="invalid-feedback">Username is required!</div>
+            </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="email">Email</Form.Label>
-              <Form.Control
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
                 type="email"
+                className="form-control"
                 placeholder="Your email address"
                 name="email"
                 onChange={handleInputChange}
                 value={formState.email}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                Email is required!
-              </Form.Control.Feedback>
-            </Form.Group>
+              <div className="invalid-feedback">Email is required!</div>
+            </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="phoneNumber">Phone Number</Form.Label>
-              <Form.Control
-                type="tel"
-                placeholder="Your phone number (with country code)"
-                name="phoneNumber"
-                onChange={handleInputChange}
-                value={formState.phoneNumber}
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                Phone number is required!
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="password">Password</Form.Label>
-              <Form.Control
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">Password</label>
+              <input
                 type="password"
+                className="form-control"
                 placeholder="Your password"
                 name="password"
                 onChange={handleInputChange}
                 value={formState.password}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                Password is required!
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-100 mb-3"
-            >
-              Sign Up
-            </Button>
-            <div className="text-center">
-              <p>
-                Already have an account? <Link to="/login">Login</Link>
-              </p>
+              <div className="invalid-feedback">Password is required!</div>
             </div>
-          </Form>
-        </Card.Body>
-      </Card>
+
+            <div className="mb-3">
+              <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+              <input
+                type="tel"
+                className="form-control"
+                placeholder="Your phone number"
+                name="phoneNumber"
+                onChange={handleInputChange}
+                value={formState.phoneNumber}
+                required
+              />
+              <div className="invalid-feedback">Phone number is required!</div>
+            </div>
+
+            <button
+              disabled={!(formState.username && formState.email && formState.password && formState.phoneNumber)}
+              type="submit"
+              className="btn btn-primary"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 export default Signup;
