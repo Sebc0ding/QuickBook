@@ -19,8 +19,8 @@ export const QUERY_ME = gql`
   }
 `;
 
-export const QUERY_APPOINTMENTS = gql`
-  query appointments {
+export const GET_APPOINTMENTS = gql`
+  query GetAppointments {
     appointments {
       _id
       title
@@ -28,6 +28,7 @@ export const QUERY_APPOINTMENTS = gql`
       startTime
       endTime
       googleEventId
+      reminderSent
       createdAt
     }
   }
