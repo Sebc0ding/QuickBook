@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
+const cors = require('cors');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
@@ -17,9 +18,30 @@ const { authMiddleware } = require('./middleware/auth');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// Apply basic middleware
+// Debug CORS settings
+console.log('CORS allowed origins:', process.env.CORS_ALLOWED_ORIGINS);
+
+// Apply logger first to capture all requests
 app.use(logger);
+
+// Apply CORS - both custom middleware and direct headers for redundancy
 app.use(corsMiddleware);
+
+// Direct CORS headers (backup approach)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://quickbookai.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+});
+
+// Apply basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,6 +63,11 @@ const server = new ApolloServer({
   },
   cache: "bounded",
   persistedQueries: false,
+  // Explicitly set CORS for Apollo Server
+  cors: {
+    origin: process.env.CORS_ALLOWED_ORIGINS ? process.env.CORS_ALLOWED_ORIGINS.split(',') : ['http://localhost:3000', 'https://quickbookai.onrender.com'],
+    credentials: true
+  }
 });
 
 // Main server startup function
@@ -52,17 +79,20 @@ const startApolloServer = async () => {
     console.log("Apollo Server started successfully");
     
     // Apply Apollo middleware
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ 
+      app,
+      cors: false // Disable Apollo's CORS as we're handling it at the Express level
+    });
     console.log(`Apollo middleware applied at ${server.graphqlPath}`);
     
     // Set up static file serving and routes based on environment
     if (process.env.NODE_ENV === 'production') {
       // Serve static files from React build
       console.log("Running in production mode, serving React app...");
-      app.use(express.static(path.join(__dirname, '../client/build')));
+      app.use(express.static(path.join(__dirname, 'public')));
       
       app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
       });
     } else {
       // In development, just show API message for root
