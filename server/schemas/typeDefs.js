@@ -19,7 +19,7 @@ const typeDefs = gql`
     availability: [Availability]
     services: [Service]
     calendarId: String
-    user: User
+    user: ID
   }
 
   type Availability {
@@ -33,6 +33,19 @@ const typeDefs = gql`
     name: String
     duration: Int
     price: Float
+    description: String
+  }
+
+  input AvailabilityInput {
+    day: String!
+    startTime: String!
+    endTime: String!
+  }
+
+  input ServiceInput {
+    name: String!
+    duration: Int!
+    price: Float!
     description: String
   }
 
@@ -53,12 +66,17 @@ const typeDefs = gql`
     user: User
   }
 
+  type CalendarConnection {
+    success: Boolean
+    message: String
+    calendarId: String
+  }
+
   type Query {
     me: User
     appointments: [Appointment]
     appointment(_id: ID!): Appointment
-    professionalServices: [Service]
-    professional: Professional
+    getProfessionalProfile: Professional
   }
 
   type Mutation {
@@ -69,16 +87,11 @@ const typeDefs = gql`
     removeAppointment(_id: ID!): Appointment
     processAiMessage(message: String!): String
     createProfessionalProfile(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
+    updateAvailability(availability: [AvailabilityInput!]!): Professional
     addService(name: String!, duration: Int!, price: Float!, description: String): Service
     updateService(_id: ID!, name: String, duration: Int, price: Float, description: String): Service
     deleteService(_id: ID!): Service
-    updateAvailability(availability: [AvailabilityInput!]!): Professional
-  }
-
-  input AvailabilityInput {
-    day: String!
-    startTime: String!
-    endTime: String!
+    connectGoogleCalendar(code: String!, redirectUri: String!): CalendarConnection
   }
 `;
 
