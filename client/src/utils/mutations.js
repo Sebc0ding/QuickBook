@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-// Login mutation
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -9,13 +8,11 @@ export const LOGIN_USER = gql`
         _id
         username
         email
-        phoneNumber
       }
     }
   }
 `;
 
-// Register new user mutation
 export const ADD_USER = gql`
   mutation addUser($username: String!, $email: String!, $password: String!, $phoneNumber: String!) {
     addUser(username: $username, email: $email, password: $password, phoneNumber: $phoneNumber) {
@@ -30,7 +27,6 @@ export const ADD_USER = gql`
   }
 `;
 
-// Add appointment mutation
 export const ADD_APPOINTMENT = gql`
   mutation addAppointment($title: String!, $description: String!, $startTime: String!, $endTime: String!) {
     addAppointment(title: $title, description: $description, startTime: $startTime, endTime: $endTime) {
@@ -47,7 +43,6 @@ export const ADD_APPOINTMENT = gql`
   }
 `;
 
-// Update appointment mutation
 export const UPDATE_APPOINTMENT = gql`
   mutation updateAppointment($_id: ID!, $title: String, $description: String, $startTime: String, $endTime: String) {
     updateAppointment(_id: $_id, title: $title, description: $description, startTime: $startTime, endTime: $endTime) {
@@ -64,20 +59,14 @@ export const UPDATE_APPOINTMENT = gql`
   }
 `;
 
-// Remove appointment mutation
 export const REMOVE_APPOINTMENT = gql`
   mutation removeAppointment($_id: ID!) {
     removeAppointment(_id: $_id) {
       _id
-      title
-      description
-      startTime
-      endTime
     }
   }
 `;
 
-// Process AI message mutation
 export const PROCESS_AI_MESSAGE = gql`
   mutation processAiMessage($message: String!) {
     processAiMessage(message: $message)
@@ -97,7 +86,6 @@ export const CREATE_PROFESSIONAL = gql`
   }
 `;
 
-e
 export const ADD_SERVICE = gql`
   mutation AddService($name: String!, $duration: Int!, $price: Float!, $description: String) {
     addService(name: $name, duration: $duration, price: $price, description: $description) {
@@ -126,26 +114,6 @@ export const DELETE_SERVICE = gql`
   mutation DeleteService($_id: ID!) {
     deleteService(_id: $_id) {
       _id
-    }
-  }
-`;
-
-export const ADD_AVAILABILITY = gql`
-  mutation addAvailability($day: String!, $startTime: String!, $endTime: String!) {
-    addAvailability(day: $day, startTime: $startTime, endTime: $endTime) {
-      _id
-      day
-      startTime
-      endTime
-    }
-  }
-`;
-
-export const CONNECT_GOOGLE_CALENDAR = gql`
-  mutation connectGoogleCalendar($code: String!) {
-    connectGoogleCalendar(code: $code) {
-      _id
-      calendarId
     }
   }
 `;
