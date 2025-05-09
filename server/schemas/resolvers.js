@@ -1,6 +1,6 @@
-const { AuthenticationError } = require('apollo-server-express');
-const { User, Appointment } = require('../models');
+const { User, Appointment, Professional } = require('../models');
 const { signToken } = require('../utils/auth');
+const { AuthenticationError } = require('apollo-server-express');
 const { sendSms } = require('../utils/twilio');
 const { processWithOpenAI } = require('../utils/openai');
 const { addToGoogleCalendar, updateGoogleCalendarEvent, deleteGoogleCalendarEvent } = require('../utils/googleCalendar');

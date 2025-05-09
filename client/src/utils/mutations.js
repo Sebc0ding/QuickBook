@@ -83,12 +83,15 @@ export const PROCESS_AI_MESSAGE = gql`
     processAiMessage(message: $message)
   }
 `;
-export const CREATE_PROFESSIONAL = gql`
-  mutation createProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
-    createProfessional(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
+import { gql } from '@apollo/client';
+
+export const CREATE_PROFESSIONAL_PROFILE = gql`
+  mutation CreateProfessionalProfile($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
+    createProfessionalProfile(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
       _id
       name
       email
+      phoneNumber
       specialty
       bio
     }

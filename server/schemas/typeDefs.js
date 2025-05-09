@@ -9,6 +9,33 @@ const typeDefs = gql`
     appointments: [Appointment]
   }
 
+  type Professional {
+    _id: ID
+    name: String
+    email: String
+    phoneNumber: String
+    specialty: String
+    bio: String
+    availability: [Availability]
+    services: [Service]
+    calendarId: String
+    user: User
+  }
+
+  type Availability {
+    day: String
+    startTime: String
+    endTime: String
+  }
+
+  type Service {
+    _id: ID
+    name: String
+    duration: Int
+    price: Float
+    description: String
+  }
+
   type Appointment {
     _id: ID
     title: String
@@ -25,42 +52,13 @@ const typeDefs = gql`
     token: ID!
     user: User
   }
-  
-  type Professional {
-    _id: ID
-    name: String
-    email: String
-    phoneNumber: String
-    specialty: String
-    bio: String
-    availability: [Availability]
-    services: [Service]
-    calendarId: String
-    user: User
-  }
-  
-  type Service {
-    _id: ID
-    name: String
-    duration: Int
-    price: Float
-    description: String
-  }
-  
-  type Availability {
-    _id: ID
-    day: String
-    startTime: String
-    endTime: String
-  }
 
   type Query {
     me: User
     appointments: [Appointment]
     appointment(_id: ID!): Appointment
-    getProfessionalProfile: Professional
-    getProfessionalServices: [Service]
-    getProfessionalAvailability: [Availability]
+    professionalServices: [Service]
+    professional: Professional
   }
 
   type Mutation {
@@ -70,10 +68,17 @@ const typeDefs = gql`
     updateAppointment(_id: ID!, title: String, description: String, startTime: String, endTime: String): Appointment
     removeAppointment(_id: ID!): Appointment
     processAiMessage(message: String!): String
-    createProfessional(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
+    createProfessionalProfile(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
     addService(name: String!, duration: Int!, price: Float!, description: String): Service
-    addAvailability(day: String!, startTime: String!, endTime: String!): Availability
-    connectGoogleCalendar(code: String!): Professional
+    updateService(_id: ID!, name: String, duration: Int, price: Float, description: String): Service
+    deleteService(_id: ID!): Service
+    updateAvailability(availability: [AvailabilityInput!]!): Professional
+  }
+
+  input AvailabilityInput {
+    day: String!
+    startTime: String!
+    endTime: String!
   }
 `;
 
