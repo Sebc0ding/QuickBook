@@ -83,3 +83,48 @@ export const PROCESS_AI_MESSAGE = gql`
     processAiMessage(message: $message)
   }
 `;
+// Add these to your existing mutations file
+
+export const CREATE_PROFESSIONAL = gql`
+  mutation createProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
+    createProfessional(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
+      _id
+      name
+      email
+      specialty
+      bio
+    }
+  }
+`;
+
+export const ADD_SERVICE = gql`
+  mutation addService($name: String!, $duration: Int!, $price: Float!, $description: String) {
+    addService(name: $name, duration: $duration, price: $price, description: $description) {
+      _id
+      name
+      duration
+      price
+      description
+    }
+  }
+`;
+
+export const ADD_AVAILABILITY = gql`
+  mutation addAvailability($day: String!, $startTime: String!, $endTime: String!) {
+    addAvailability(day: $day, startTime: $startTime, endTime: $endTime) {
+      _id
+      day
+      startTime
+      endTime
+    }
+  }
+`;
+
+export const CONNECT_GOOGLE_CALENDAR = gql`
+  mutation connectGoogleCalendar($code: String!) {
+    connectGoogleCalendar(code: $code) {
+      _id
+      calendarId
+    }
+  }
+`;

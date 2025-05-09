@@ -13,6 +13,8 @@ const corsMiddleware = require('./middleware/cors');
 const logger = require('./middleware/logger');
 const { apiLimiter, authLimiter } = require('./middleware/rateLimit');
 const { authMiddleware } = require('./middleware/auth');
+// Add near your other route imports
+const twilioRoutes = require('./routes/twilioWebhook');
 
 // Set up port and initialize Express app
 const PORT = process.env.PORT || 3001;

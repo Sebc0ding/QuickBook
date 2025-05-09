@@ -46,3 +46,41 @@ export const QUERY_APPOINTMENT = gql`
     }
   }
 `;
+// Add these to your existing queries file
+
+export const GET_PROFESSIONAL_PROFILE = gql`
+  query getProfessionalProfile {
+    getProfessionalProfile {
+      _id
+      name
+      email
+      phoneNumber
+      specialty
+      bio
+      calendarId
+    }
+  }
+`;
+
+export const GET_PROFESSIONAL_SERVICES = gql`
+  query getProfessionalServices {
+    getProfessionalServices {
+      _id
+      name
+      duration
+      price
+      description
+    }
+  }
+`;
+
+export const GET_PROFESSIONAL_AVAILABILITY = gql`
+  query getProfessionalAvailability {
+    getProfessionalAvailability {
+      _id
+      day
+      startTime
+      endTime
+    }
+  }
+`;

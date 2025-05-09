@@ -76,91 +76,33 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
-      <Row className="mb-4">
-        <Col>
-          <h1>Welcome, {user.username}!</h1>
-        </Col>
-        <Col className="text-end">
-          <Button as={Link} to="/appointment/new" variant="success">
-            + New Appointment
-          </Button>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col md={8}>
-          <Card className="mb-4">
-            <Card.Header>Your Appointments</Card.Header>
-            <Card.Body>
-              {appointments.length ? (
-                <ListGroup>
-                  {appointments.map((appointment) => (
-                    <ListGroup.Item key={appointment._id} className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5>{appointment.title}</h5>
-                        <p className="mb-1">{appointment.description}</p>
-                        <small>
-                          {formatDate(appointment.startTime)} - {formatDate(appointment.endTime)}
-                        </small>
-                      </div>
-                      <div>
-                        <Button
-                          as={Link}
-                          to={`/appointment/edit/${appointment._id}`}
-                          variant="outline-primary"
-                          size="sm"
-                          className="me-2"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          onClick={() => handleDeleteAppointment(appointment._id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              ) : (
-                <p>No appointments yet. Create one to get started!</p>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col md={4}>
-          <Card>
-            <Card.Header>AI Assistant</Card.Header>
-            <Card.Body>
-              <div className="ai-chat-area mb-3" style={{ minHeight: '200px', maxHeight: '300px', overflowY: 'auto' }}>
-                {aiResponse && (
-                  <div className="ai-response p-2 mb-2 bg-light rounded">
-                    <p className="mb-0">{aiResponse}</p>
-                  </div>
-                )}
-              </div>
-              <Form onSubmit={handleSendMessage}>
-                <InputGroup>
-                  <Form.Control
-                    placeholder="Ask about scheduling or appointments..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  <Button type="submit" variant="primary">Send</Button>
-                </InputGroup>
-              </Form>
-              <small className="text-muted mt-2 d-block">
-                Try: "Book me a doctor appointment next Monday at 2pm" or "What appointments do I have this week?"
-              </small>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h1>Professional Dashboard</h1>
+      </div>
+      
+      <div className="dashboard-grid">
+        <div className="calendar-section">
+          <h2>Your Appointments</h2>
+          <GoogleCalendarView />
+        </div>
+        
+        <div className="ai-assistant-section">
+          <h2>Eric - Your AI Assistant</h2>
+          <ChatInterface />
+        </div>
+        
+        <div className="services-section">
+          <h2>Manage Services</h2>
+          <ServiceManager />
+        </div>
+        
+        <div className="availability-section">
+          <h2>Manage Availability</h2>
+          <AvailabilityManager />
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -34,7 +34,20 @@ class AuthService {
   // Set token to localStorage and redirect to dashboard
   login(idToken) {
     localStorage.setItem('id_token', idToken);
-    window.location.assign('/dashboard');
+    
+    // Decode the token to get user info
+    const profile = this.getProfile();
+    
+    // Check if user has a professional profile
+    // This could be stored in the token or you could make a separate query
+    // For now, let's assume new users need onboarding
+    const needsOnboarding = !localStorage.getItem('hasProfile');
+    
+    if (needsOnboarding) {
+      window.location.assign('/onboarding');
+    } else {
+      window.location.assign('/dashboard');
+    }
   }
 
   // Clear token from localStorage and redirect to homepage

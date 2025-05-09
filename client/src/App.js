@@ -46,11 +46,16 @@ function App() {
           <div className="container mt-4">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/appointment/new" element={<AppointmentForm />} />
-              <Route path="/appointment/edit/:id" element={<AppointmentForm />} />
+              <Route path="/oauth-callback" element={<OAuthCallback />} />
+              
+              {/* Add the onboarding route */}
+              <Route path="/onboarding" element={<Onboarding />} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

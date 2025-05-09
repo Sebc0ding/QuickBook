@@ -6,25 +6,29 @@ import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const Signup = () => {
-  const [userFormData, setUserFormData] = useState({ 
+  const [formState, setFormState] = useState({
     username: '', 
     email: '', 
     password: '',
-    phoneNumber: '' 
+    phoneNumber: '',
+    specialty: '', // Added professional field
+    bio: ''        // Added professional field
   });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const [addUser, { error }] = useMutation(ADD_USER);
+  // Add mutation to create professional profile
+  const [createProfessional] = useMutation(CREATE_PROFESSIONAL);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
+    setFormState({ ...formState, [name]: value });
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    
     // Check if form has everything
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -32,24 +36,39 @@ const Signup = () => {
       event.stopPropagation();
       return;
     }
-
+    
     try {
+      // First create user account
       const { data } = await addUser({
-        variables: { ...userFormData },
+        variables: { ...formState }
       });
-
+      
+      // Then create professional profile
+      await createProfessional({
+        variables: {
+          name: formState.username,
+          email: formState.email,
+          phoneNumber: formState.phoneNumber,
+          specialty: formState.specialty,
+          bio: formState.bio,
+          userId: data.addUser.user._id
+        }
+      });
+      
       Auth.login(data.addUser.token);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
       setShowAlert(true);
     }
 
     // Reset form
-    setUserFormData({
+    setFormState({
       username: '',
       email: '',
       password: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      specialty: '',
+      bio: ''
     });
   };
 

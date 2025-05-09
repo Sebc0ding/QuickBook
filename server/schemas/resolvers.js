@@ -29,6 +29,29 @@ const resolvers = {
       }
       throw new AuthenticationError('Not logged in');
     },
+    getProfessionalProfile: async (parent, args, context) => {
+      if (context.user) {
+        const professional = await Professional.findOne({ user: context.user._id });
+        return professional;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    
+    getProfessionalServices: async (parent, args, context) => {
+      if (context.user) {
+        const professional = await Professional.findOne({ user: context.user._id });
+        return professional?.services || [];
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    
+    getProfessionalAvailability: async (parent, args, context) => {
+      if (context.user) {
+        const professional = await Professional.findOne({ user: context.user._id });
+        return professional?.availability || [];
+      }
+      throw new AuthenticationError('Not logged in');
+    }
   },
   Mutation: {
     addUser: async (parent, args) => {
@@ -144,6 +167,72 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    createProfessional: async (parent, args, context) => {
+      if (context.user) {
+        const professional = await Professional.create({
+          ...args,
+          user: context.user._id
+        });
+        
+        return professional;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    
+    addService: async (parent, { name, duration, price, description }, context) => {
+      if (context.user) {
+        const professional = await Professional.findOne({ user: context.user._id });
+        
+        if (!professional) {
+          throw new Error('Professional profile not found');
+        }
+        
+        professional.services.push({ name, duration, price, description });
+        await professional.save();
+        
+        return professional.services[professional.services.length - 1];
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    
+    addAvailability: async (parent, { day, startTime, endTime }, context) => {
+      if (context.user) {
+        const professional = await Professional.findOne({ user: context.user._id });
+        
+        if (!professional) {
+          throw new Error('Professional profile not found');
+        }
+        
+        professional.availability.push({ day, startTime, endTime });
+        await professional.save();
+        
+        return professional.availability[professional.availability.length - 1];
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    
+    connectGoogleCalendar: async (parent, { code }, context) => {
+      if (context.user) {
+        try {
+          // Process the OAuth code to get tokens
+          const { tokens } = await oauth2Client.getToken(code);
+          oauth2Client.setCredentials(tokens);
+          
+          // Store the refresh token in the database for this professional
+          const professional = await Professional.findOneAndUpdate(
+            { user: context.user._id },
+            { calendarId: 'primary', googleRefreshToken: tokens.refresh_token },
+            { new: true }
+          );
+          
+          return professional;
+        } catch (error) {
+          console.error('Error connecting Google Calendar:', error);
+          throw new Error('Failed to connect Google Calendar');
+        }
+      }
+      throw new AuthenticationError('Not logged in');
+    }
   },
 };
 
