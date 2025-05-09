@@ -131,3 +131,13 @@ export const ADD_AVAILABILITY = gql`
     }
   }
 `;
+
+export const CONNECT_GOOGLE_CALENDAR = gql`
+  mutation ConnectGoogleCalendar($code: String!, $redirectUri: String!) {
+    connectGoogleCalendar(code: $code, redirectUri: $redirectUri) {
+      success
+      message
+      calendarId
+    }
+  }
+`;
