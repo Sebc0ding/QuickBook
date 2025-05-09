@@ -4,10 +4,10 @@ const cors = require('cors');
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl requests)
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'https://quickbookai.onrender.com' // Update with your deployed frontend URL
-    ];
+    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS 
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:3000'];
+
     
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
