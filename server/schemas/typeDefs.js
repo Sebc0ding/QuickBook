@@ -90,10 +90,14 @@ const typeDefs = gql`
     professional(_id: ID!): Professional
     getProfessionalProfile: Professional
     getProfessionalServices: [Service]
+    getProfessionalAvailability: [Availability]
     getAvailableTimes(date: String!, professionalId: ID!, serviceId: ID!): [String]
     getService(_id: ID!): Service
     getServices: [Service]
     getProfessionalById(_id: ID!): Professional
+    getAllProfessionals: [Professional]
+    getAvailabilitySlots(date: String!, professionalId: ID!): [String]
+    checkAvailability(professionalId: ID!, date: String!): Boolean
   }
 
   type Mutation {
@@ -113,6 +117,8 @@ const typeDefs = gql`
     deleteProfessionalProfile(_id: ID!): Professional
     
     updateAvailability(availability: [AvailabilityInput!]!): Professional
+    addAvailability(day: String!, startTime: String!, endTime: String!): Professional
+    removeAvailability(_id: ID!): Professional
     
     addService(name: String!, duration: Int!, price: Float!, description: String): Service
     updateService(_id: ID!, name: String, duration: Int, price: Float, description: String): Service
@@ -122,8 +128,10 @@ const typeDefs = gql`
     disconnectGoogleCalendar: Boolean
     
     processAiMessage(message: String!): String
+    processMessage(message: String!): String
     sendReminderEmail(appointmentId: ID!): Boolean
     sendReminderSMS(appointmentId: ID!): Boolean
+    sendTextMessage(to: String!, body: String!): Boolean
   }
 `;
 
