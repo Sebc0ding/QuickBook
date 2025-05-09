@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
-import { ADD_USER } from '../utils/mutations';
+import { ADD_USER, CREATE_PROFESSIONAL } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const Signup = () => {
@@ -21,21 +21,16 @@ const Signup = () => {
   // Add mutation to create professional profile
   const [createProfessional] = useMutation(CREATE_PROFESSIONAL);
 
-  const handleInputChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormState({ ...formState, [name]: value });
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    
-    // Check if form has everything
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
     
     try {
       // First create user account
@@ -49,27 +44,15 @@ const Signup = () => {
           name: formState.username,
           email: formState.email,
           phoneNumber: formState.phoneNumber,
-          specialty: formState.specialty,
-          bio: formState.bio,
-          userId: data.addUser.user._id
+          specialty: formState.specialty || '', // Default value in case it's empty
+          bio: formState.bio || ''               // Default value in case it's empty
         }
       });
       
       Auth.login(data.addUser.token);
     } catch (e) {
       console.error(e);
-      setShowAlert(true);
     }
-
-    // Reset form
-    setFormState({
-      username: '',
-      email: '',
-      password: '',
-      phoneNumber: '',
-      specialty: '',
-      bio: ''
-    });
   };
 
   return (
@@ -91,7 +74,7 @@ const Signup = () => {
                 placeholder="Your username"
                 name="username"
                 onChange={handleInputChange}
-                value={userFormData.username}
+                value={formState.username}
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -106,7 +89,7 @@ const Signup = () => {
                 placeholder="Your email address"
                 name="email"
                 onChange={handleInputChange}
-                value={userFormData.email}
+                value={formState.email}
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -121,7 +104,7 @@ const Signup = () => {
                 placeholder="Your phone number (with country code)"
                 name="phoneNumber"
                 onChange={handleInputChange}
-                value={userFormData.phoneNumber}
+                value={formState.phoneNumber}
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -136,7 +119,7 @@ const Signup = () => {
                 placeholder="Your password"
                 name="password"
                 onChange={handleInputChange}
-                value={userFormData.password}
+                value={formState.password}
                 required
               />
               <Form.Control.Feedback type="invalid">

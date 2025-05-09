@@ -83,8 +83,6 @@ export const PROCESS_AI_MESSAGE = gql`
     processAiMessage(message: $message)
   }
 `;
-// Add these to your existing mutations file
-
 export const CREATE_PROFESSIONAL = gql`
   mutation createProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
     createProfessional(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
