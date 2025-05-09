@@ -6,7 +6,7 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps, curl requests)
     const allowedOrigins = [
       'http://localhost:3000',
-      'https://quickbook-qns8.onrender.com/' // Update with your deployed frontend URL
+      'https://quickbookai.onrender.com' // Update with your deployed frontend URL
     ];
     
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
