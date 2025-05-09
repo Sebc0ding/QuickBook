@@ -96,13 +96,33 @@ export const CREATE_PROFESSIONAL = gql`
 `;
 
 export const ADD_SERVICE = gql`
-  mutation addService($name: String!, $duration: Int!, $price: Float!, $description: String) {
+  mutation AddService($name: String!, $duration: Int!, $price: Float!, $description: String) {
     addService(name: $name, duration: $duration, price: $price, description: $description) {
       _id
       name
       duration
       price
       description
+    }
+  }
+`;
+
+export const UPDATE_SERVICE = gql`
+  mutation UpdateService($_id: ID!, $name: String, $duration: Int, $price: Float, $description: String) {
+    updateService(_id: $_id, name: $name, duration: $duration, price: $price, description: $description) {
+      _id
+      name
+      duration
+      price
+      description
+    }
+  }
+`;
+
+export const DELETE_SERVICE = gql`
+  mutation DeleteService($_id: ID!) {
+    deleteService(_id: $_id) {
+      _id
     }
   }
 `;

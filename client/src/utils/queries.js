@@ -63,8 +63,8 @@ export const GET_PROFESSIONAL_PROFILE = gql`
 `;
 
 export const GET_PROFESSIONAL_SERVICES = gql`
-  query getProfessionalServices {
-    getProfessionalServices {
+  query GetProfessionalServices {
+    professionalServices {
       _id
       name
       duration
