@@ -109,26 +109,25 @@ export const UPDATE_SERVICE = gql`
     }
   }
 `;
-  import { gql } from '@apollo/client'
 
-  export const DELETE_SERVICE = gql`
-    mutation DeleteService($_id: ID!) {
-      deleteService(_id: $_id) {
-        _id
+export const DELETE_SERVICE = gql`
+  mutation DeleteService($_id: ID!) {
+    deleteService(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const ADD_AVAILABILITY = gql`
+  mutation UpdateAvailability($availability: [AvailabilityInput!]!) {
+    updateAvailability(availability: $availability) {
+      _id
+      name
+      availability {
+        day
+        startTime
+        endTime
       }
     }
-  `
-
-  export const ADD_AVAILABILITY = gql`
-    mutation UpdateAvailability($availability: [AvailabilityInput!]!) {
-      updateAvailability(availability: $availability) {
-        _id
-        name
-        availability {
-          day
-          startTime
-          endTime
-        }
-      }
-    }
-  `
+  }
+`;
