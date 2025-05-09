@@ -84,8 +84,8 @@ export const PROCESS_AI_MESSAGE = gql`
   }
 `;
 
-export const CREATE_PROFESSIONAL_PROFILE = gql`
-  mutation CreateProfessionalProfile($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
+export const CREATE_PROFESSIONAL = gql`
+  mutation CreateProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
     createProfessionalProfile(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
       _id
       name
@@ -97,6 +97,7 @@ export const CREATE_PROFESSIONAL_PROFILE = gql`
   }
 `;
 
+e
 export const ADD_SERVICE = gql`
   mutation AddService($name: String!, $duration: Int!, $price: Float!, $description: String) {
     addService(name: $name, duration: $duration, price: $price, description: $description) {
