@@ -77,6 +77,7 @@ const typeDefs = gql`
     appointments: [Appointment]
     appointment(_id: ID!): Appointment
     getProfessionalProfile: Professional
+    getProfessionalServices: [Service]
   }
 
   type Mutation {
