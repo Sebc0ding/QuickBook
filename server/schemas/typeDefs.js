@@ -112,7 +112,6 @@ const typeDefs = gql`
     removeAppointment(_id: ID!): Appointment
     cancelAppointment(_id: ID!): Appointment
     
-   
     createProfessional(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
     createProfessionalProfile(name: String!, email: String!, phoneNumber: String!, specialty: String!, bio: String): Professional
     updateProfessionalProfile(_id: ID!, name: String, email: String, phoneNumber: String, specialty: String, bio: String): Professional
