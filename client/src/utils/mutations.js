@@ -74,8 +74,8 @@ export const PROCESS_AI_MESSAGE = gql`
 `;
 
 export const CREATE_PROFESSIONAL = gql`
-  mutation CreateProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
-    createProfessionalProfile(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
+  mutation createProfessional($name: String!, $email: String!, $phoneNumber: String!, $specialty: String!, $bio: String) {
+    createProfessional(name: $name, email: $email, phoneNumber: $phoneNumber, specialty: $specialty, bio: $bio) {
       _id
       name
       email
@@ -87,9 +87,8 @@ export const CREATE_PROFESSIONAL = gql`
 `;
 
 export const ADD_SERVICE = gql`
-  mutation AddService($name: String!, $duration: Int!, $price: Float!, $description: String) {
+  mutation addService($name: String!, $duration: Int!, $price: Float!, $description: String) {
     addService(name: $name, duration: $duration, price: $price, description: $description) {
-      _id
       name
       duration
       price
@@ -99,7 +98,7 @@ export const ADD_SERVICE = gql`
 `;
 
 export const UPDATE_SERVICE = gql`
-  mutation UpdateService($_id: ID!, $name: String, $duration: Int, $price: Float, $description: String) {
+  mutation updateService($_id: ID!, $name: String, $duration: Int, $price: Float, $description: String) {
     updateService(_id: $_id, name: $name, duration: $duration, price: $price, description: $description) {
       _id
       name
@@ -111,7 +110,7 @@ export const UPDATE_SERVICE = gql`
 `;
 
 export const DELETE_SERVICE = gql`
-  mutation DeleteService($_id: ID!) {
+  mutation deleteService($_id: ID!) {
     deleteService(_id: $_id) {
       _id
     }
@@ -119,24 +118,20 @@ export const DELETE_SERVICE = gql`
 `;
 
 export const ADD_AVAILABILITY = gql`
-  mutation UpdateAvailability($availability: [AvailabilityInput!]!) {
-    updateAvailability(availability: $availability) {
-      _id
-      name
-      availability {
-        day
-        startTime
-        endTime
-      }
+  mutation addAvailability($day: String!, $startTime: String!, $endTime: String!) {
+    addAvailability(day: $day, startTime: $startTime, endTime: $endTime) {
+      day
+      startTime
+      endTime
     }
   }
 `;
 
 export const CONNECT_GOOGLE_CALENDAR = gql`
-  mutation ConnectGoogleCalendar($code: String!, $redirectUri: String!) {
-    connectGoogleCalendar(code: $code, redirectUri: $redirectUri) {
-      success
-      message
+  mutation connectGoogleCalendar($code: String!) {
+    connectGoogleCalendar(code: $code) {
+      _id
+      user
       calendarId
     }
   }
