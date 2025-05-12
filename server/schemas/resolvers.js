@@ -3,7 +3,11 @@ const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 const { sendSms } = require('../utils/twilio');
 const { processWithOpenAI } = require('../utils/openai');
-const { addToGoogleCalendar, updateGoogleCalendarEvent, deleteGoogleCalendarEvent } = require('../utils/googleCalendar');
+const {
+  addToGoogleCalendar,
+  updateGoogleCalendarEvent,
+  deleteGoogleCalendarEvent
+} = require('../utils/googleCalendar');
 
 const resolvers = {
   Query: {
@@ -12,7 +16,6 @@ const resolvers = {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
           .populate('appointments');
-
         return userData;
       }
       throw new AuthenticationError('Not logged in');
@@ -61,17 +64,13 @@ const resolvers = {
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
       }
-
       const correctPw = await user.isCorrectPassword(password);
-
       if (!correctPw) {
         throw new AuthenticationError('Incorrect credentials');
       }
-
       const token = signToken(user);
       return { token, user };
     },
@@ -82,7 +81,6 @@ const resolvers = {
           ...args,
           userId: context.user._id,
         });
-
         // Add to Google Calendar
         const googleEvent = await addToGoogleCalendar({
           summary: args.title,
@@ -91,26 +89,22 @@ const resolvers = {
           endTime: args.endTime,
           userEmail: context.user.email,
         });
-
         // Update the appointment with Google Event ID
         if (googleEvent && googleEvent.id) {
           appointment.googleEventId = googleEvent.id;
           await appointment.save();
         }
-
         // Add appointment to user
         await User.findByIdAndUpdate(
           { _id: context.user._id },
           { $push: { appointments: appointment._id } },
           { new: true }
         );
-
         // Send confirmation SMS
         await sendSms(
           context.user.phoneNumber,
           `Your appointment "${args.title}" has been scheduled for ${new Date(args.startTime).toLocaleString()}.`
         );
-
         return appointment;
       }
       throw new AuthenticationError('You need to be logged in!');
@@ -122,7 +116,6 @@ const resolvers = {
           args,
           { new: true }
         );
-
         // Update Google Calendar event if exists
         if (appointment.googleEventId) {
           await updateGoogleCalendarEvent({
@@ -133,7 +126,6 @@ const resolvers = {
             endTime: args.endTime,
           });
         }
-
         return appointment;
       }
       throw new AuthenticationError('You need to be logged in!');
@@ -144,17 +136,14 @@ const resolvers = {
           _id,
           userId: context.user._id,
         });
-
         // Remove from Google Calendar
         if (appointment.googleEventId) {
           await deleteGoogleCalendarEvent(appointment.googleEventId);
         }
-
         await User.findByIdAndUpdate(
           { _id: context.user._id },
           { $pull: { appointments: _id } }
         );
-
         return appointment;
       }
       throw new AuthenticationError('You need to be logged in!');
@@ -214,14 +203,11 @@ const resolvers = {
     connectGoogleCalendar: async (parent, { code }, context) => {
       if (context.user) {
         try {
-          // Process the OAuth code to get tokens
-          const { tokens } = await oauth2Client.getToken(code);
-          oauth2Client.setCredentials(tokens);
-          
-          // Store the refresh token in the database for this professional
+          // Since we're using JWT service account authentication instead of OAuth2,
+          // we can simply store the calendar ID for this professional
           const professional = await Professional.findOneAndUpdate(
             { user: context.user._id },
-            { calendarId: 'primary', googleRefreshToken: tokens.refresh_token },
+            { calendarId: 'primary' }, // Using 'primary' as the default calendar
             { new: true }
           );
           
@@ -235,5 +221,7 @@ const resolvers = {
     }
   },
 };
+
+module.exports = resolvers;
 
 module.exports = resolvers;
