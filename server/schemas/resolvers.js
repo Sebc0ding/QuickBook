@@ -200,24 +200,32 @@ const resolvers = {
       throw new AuthenticationError('Not logged in');
     },
     
-    connectGoogleCalendar: async (parent, { code }, context) => {
+    connectGoogleCalendar: async (parent, { code, redirectUri }, context) => {
       if (context.user) {
         try {
-          // Since we're using JWT service account authentication instead of OAuth2,
-          // we can simply store the calendar ID for this professional
           const professional = await Professional.findOneAndUpdate(
             { user: context.user._id },
-            { calendarId: 'primary' }, // Using 'primary' as the default calendar
+            { calendarId: 'primary' },
             { new: true }
           );
           
-          return professional;
+          return {
+            success: true,
+            message: "Google Calendar connected successfully",
+            calendarId: "primary"
+          };
         } catch (error) {
           console.error('Error connecting Google Calendar:', error);
           throw new Error('Failed to connect Google Calendar');
         }
       }
       throw new AuthenticationError('Not logged in');
+    },
+    
+    // Add alias for createProfessionalProfile
+    createProfessionalProfile: async (parent, args, context) => {
+      // Just call the existing function
+      return resolvers.Mutation.createProfessional(parent, args, context);
     }
   },
 };

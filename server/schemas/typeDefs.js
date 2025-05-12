@@ -125,7 +125,7 @@ const typeDefs = gql`
     updateService(_id: ID!, name: String, duration: Int, price: Float, description: String): Service
     deleteService(_id: ID!): Service
     
-    connectGoogleCalendar(code: String!, redirectUri: String!): CalendarConnection
+    connectGoogleCalendar(code: String!): Professional
     disconnectGoogleCalendar: Boolean
     
     processAiMessage(message: String!): String
