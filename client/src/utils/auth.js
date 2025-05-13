@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import decode from 'jwt-decode';
 
 class AuthService {
   // Get user data from token
