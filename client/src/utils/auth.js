@@ -3,7 +3,7 @@ import decode from 'jwt-decode';
 class AuthService {
   // Get user data from token
   getProfile() {
-    return jwtDecode(this.getToken());
+    return decode(this.getToken());
   }
 
   // Check if user is logged in
@@ -15,7 +15,7 @@ class AuthService {
   // Check if token is expired
   isTokenExpired(token) {
     try {
-      const decoded = jwtDecode(token);
+      const decoded = decode(token);
       if (decoded.exp < Date.now() / 1000) {
         return true;
       } else {
