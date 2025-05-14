@@ -18,8 +18,12 @@ import OAuthCallback from './pages/OAuthCallback';
 import Onboarding from './pages/Onboarding';
 
 // Construct our main GraphQL API endpoint
-const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql', // Relative path works on both dev and production
+const uploadLink = createHttpLink({
+  uri:
+    process.env.NODE_ENV === 'production'
+      ? 'https://quickbookai.onrender.com/graphql'
+      : 'http://localhost:3001/graphql',
+  credentials: 'include',
 });
 
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header
