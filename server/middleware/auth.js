@@ -20,7 +20,7 @@ const authMiddleware = ({ req }) => {
     return { user: data };
   } catch (error) {
     console.log('Invalid token');
-    throw new AuthenticationError('Invalid or expired token');
+    // throw new AuthenticationError('Invalid or expired token');
   }
 };
 
