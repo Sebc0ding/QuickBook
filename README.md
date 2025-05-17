@@ -1,4 +1,4 @@
-# AI Appointment Booking Application
+# QuickBookAI: AI Appointment Booking Application
 
 This application integrates React, GraphQL, MongoDB, and JWT authentication with Twilio for SMS, OpenAI for natural language processing, and Google Calendar for scheduling.
 
@@ -37,7 +37,7 @@ This application integrates React, GraphQL, MongoDB, and JWT authentication with
 
 ### Server
 ```
-PORT=3001
+
 MONGODB_URI=mongodb://localhost/ai-appointment-booking
 JWT_SECRET=your_jwt_secret
 TWILIO_ACCOUNT_SID=your_twilio_sid
